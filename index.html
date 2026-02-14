@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Synchro - Physical AI App Verification</title>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel Standalone (for JSX) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome (Optional for icons if needed, though SVG used previously) -->
+    
+    <style>
+        /* Custom scrollbar to match the modern look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- Header Component ---
+        const Header = () => {
+            const [scrolled, setScrolled] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    setScrolled(window.scrollY > 20);
+                };
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const navItems = [
+                { name: '개요', href: '#overview' },
+                { name: '기술', href: '#technology' },
+                { name: '기능', href: '#features' },
+                { name: '기대효과', href: '#effects' },
+                { name: '시연영상', href: '#demo' },
+            ];
+
+            return (
+                <header 
+                    className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+                        scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'
+                    }`}
+                >
+                    <div className="container mx-auto px-6 flex items-center justify-between">
+                        <div className="text-2xl font-bold text-blue-900 tracking-tighter cursor-pointer">
+                            Project Synchro
+                        </div>
+                        
+                        <nav className="hidden md:flex items-center space-x-8">
+                            {navItems.map((item) => (
+                                <a 
+                                    key={item.name} 
+                                    href={item.href}
+                                    className="text-slate-600 hover:text-blue-600 font-medium transition-colors"
+                                >
+                                    {item.name}
+                                </a>
+                            ))}
+                        </nav>
+
+                        <button className="hidden md:block px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/30">
+                            무료 시작하기
+                        </button>
+
+                        <button className="md:hidden text-slate-700">
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                    </div>
+                </header>
+            );
+        };
+
+        // --- Hero Component ---
+        const Hero = () => {
+            return (
+                <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50">
+                    <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-100/50 -skew-x-12 translate-x-20 blur-3xl pointer-events-none"></div>
+                    <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <div className="container mx-auto px-6 relative z-10">
+                        <div className="max-w-4xl mx-auto text-center">
+                            <div className="inline-block px-4 py-1.5 mb-6 text-sm font-semibold text-blue-600 bg-blue-50 rounded-full border border-blue-100">
+                                2026 Physical AI Innovation
+                            </div>
+                            
+                            <h1 className="text-5xl md:text-7xl font-bold text-slate-900 leading-tight mb-6">
+                                앱 검증의 미래, <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                                    Physical AI
+                                </span>로 시작하세요
+                            </h1>
+                            
+                            <p className="text-xl md:text-2xl text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
+                                인간의 손길 그대로, 로봇이 검증합니다.<br/>
+                                NH 올바름 Project Synchro로 무중단 서비스를 실현하세요.
+                            </p>
+                            
+                            <div className="flex flex-col sm:flex-row justify-center gap-4">
+                                <button className="px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-xl hover:bg-blue-700 transition-all shadow-xl hover:shadow-blue-600/30 transform hover:-translate-y-1">
+                                    무료로 시작하기
+                                </button>
+                                <button className="px-8 py-4 bg-white text-slate-700 text-lg font-semibold rounded-xl border border-slate-200 hover:border-blue-300 hover:text-blue-600 transition-all shadow-md hover:shadow-lg">
+                                    시연 영상 보기
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // --- Overview Component ---
+        const Overview = () => {
+            const cards = [
+                {
+                    title: "서비스 중요도 증대",
+                    desc: "24/365 무중단 서비스가 필수적인 시대. 스마트뱅킹, NH Pay 등 핵심 금융 앱의 안정성이 곧 경쟁력입니다.",
+                    icon: (
+                        <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    )
+                },
+                {
+                    title: "기존 검증의 한계",
+                    desc: "복잡한 보안 정책(Face ID, 보안키패드)으로 인해 기존 SW 자동화(RPA) 도구로는 접근조차 불가능합니다.",
+                    icon: (
+                        <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    )
+                },
+                {
+                    title: "Physical AI 솔루션",
+                    desc: "로봇이 실제 손가락처럼 디바이스를 조작하여 보안 장벽을 넘고, 비전 AI로 결과를 완벽하게 판독합니다.",
+                    icon: (
+                        <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    )
+                }
+            ];
+
+            return (
+                <section id="overview" className="py-24 bg-white">
+                    <div className="container mx-auto px-6">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">왜 Physical AI인가?</h2>
+                            <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-10">
+                                금융 앱 서비스의 복잡도가 증가함에 따라, 기존의 소프트웨어 검증 방식은 한계에 도달했습니다.
+                                <br />Physical AI는 이 문제를 물리적 접근으로 해결합니다.
+                            </p>
+                            
+                            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-100 max-w-4xl mx-auto">
+                                <img src="./VIEW.PNG" alt="Project Synchro Overview" className="w-full h-auto object-cover" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent pointer-events-none"></div>
+                            </div>
+                        </div>
+
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {cards.map((card, idx) => (
+                                <div key={idx} className="p-8 rounded-2xl bg-slate-50 hover:bg-white hover:shadow-xl transition-all border border-slate-100 hover:border-blue-100 group">
+                                    <div className="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                        {card.icon}
+                                    </div>
+                                    <h3 className="text-xl font-bold text-slate-900 mb-3">{card.title}</h3>
+                                    <p className="text-slate-600 leading-relaxed">
+                                        {card.desc}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // --- Technology Component ---
+        const Technology = () => {
+            const steps = [
+                { num: '01', title: '시나리오 작성', desc: 'No-Code 방식 검증 동작 정의' },
+                { num: '02', title: '환경 설정', desc: '테스트 기기(S24, iPhone15) 배치' },
+                { num: '03', title: '물리적 실행', desc: '로봇 팔의 물리적 터치 및 검증' },
+                { num: '04', title: '결과 분석', desc: '비전 AI OCR 판독 및 리포팅' },
+            ];
+
+            return (
+                <section id="technology" className="py-24 bg-slate-50">
+                    <div className="container mx-auto px-6">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">핵심 기술 프로세스</h2>
+                            <p className="text-lg text-slate-600">
+                                Physical AI는 4단계의 정교한 프로세스를 통해 완벽한 검증을 수행합니다.
+                            </p>
+                        </div>
+
+                        <div className="grid md:grid-cols-4 gap-6 mb-20 relative">
+                            {/* Connector Line (Desktop) */}
+                            <div className="hidden md:block absolute top-12 left-0 right-0 h-0.5 bg-blue-200 -z-10 mx-16"></div>
+                            
+                            {steps.map((step, idx) => (
+                                <div key={idx} className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 relative z-10 text-center hover:-translate-y-2 transition-transform duration-300">
+                                    <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 shadow-lg shadow-blue-200">
+                                        {step.num}
+                                    </div>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-2">{step.title}</h3>
+                                    <p className="text-sm text-slate-500">{step.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="bg-white rounded-2xl p-10 shadow-lg border border-slate-100">
+                            <h3 className="text-2xl font-bold text-slate-900 mb-8 border-l-4 border-blue-500 pl-4">주요 기술 스택</h3>
+                            <div className="grid md:grid-cols-2 gap-8">
+                                <div className="space-y-6">
+                                    <div className="flex items-start">
+                                        <div className="w-2 h-2 mt-2 bg-blue-500 rounded-full mr-4 shrink-0"></div>
+                                        <div>
+                                            <h4 className="font-bold text-slate-900 mb-1">물리적 조작 및 생체인식</h4>
+                                            <p className="text-slate-600 text-sm">로봇 팔이 실제 손가락처럼 화면을 터치하여 Face ID, 지문인식 등 보안 솔루션을 물리적으로 통과합니다.</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start">
+                                        <div className="w-2 h-2 mt-2 bg-blue-500 rounded-full mr-4 shrink-0"></div>
+                                        <div>
+                                            <h4 className="font-bold text-slate-900 mb-1">2FA 및 OTP 자동 입력</h4>
+                                            <p className="text-slate-600 text-sm">SMS로 수신된 인증번호를 비전 AI가 실시간으로 판독하여 로봇이 자동으로 입력합니다.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="space-y-6">
+                                    <div className="flex items-start">
+                                        <div className="w-2 h-2 mt-2 bg-blue-500 rounded-full mr-4 shrink-0"></div>
+                                        <div>
+                                            <h4 className="font-bold text-slate-900 mb-1">Deep Link 검증</h4>
+                                            <p className="text-slate-600 text-sm">외부 링크나 푸시 알림을 통해 앱 내 특정 메뉴로 정확히 진입하는지 검증합니다.</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start">
+                                        <div className="w-2 h-2 mt-2 bg-blue-500 rounded-full mr-4 shrink-0"></div>
+                                        <div>
+                                            <h4 className="font-bold text-slate-900 mb-1">Side-by-Side 비교 분석</h4>
+                                            <p className="text-slate-600 text-sm">이전/현재 버전을 병렬 구동하여 UI 레이아웃, 속도 변화 등을 정밀 비교 분석합니다.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            );
+        };
+
+        // --- Features Component ---
+        const Features = () => {
+            return (
+                <section id="features" className="py-24 bg-white">
+                    <div className="container mx-auto px-6">
+                        <div className="flex flex-col md:flex-row items-center gap-16">
+                            <div className="md:w-1/2">
+                                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight">
+                                    통합 대시보드 및 <br className="hidden md:block"/>
+                                    <span className="text-blue-600">지능형 관제 시스템</span>
+                                </h2>
+                                <p className="text-lg text-slate-600 mb-8">
+                                    수백 대의 기기를 한눈에 모니터링하고, 장애 발생 시 담당자에게 즉시 알림을 발송합니다.
+                                </p>
+                                
+                                <ul className="space-y-4">
+                                    <li className="flex items-center text-slate-700">
+                                        <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        CI/CD 파이프라인 자동 연동
+                                    </li>
+                                    <li className="flex items-center text-slate-700">
+                                        <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        실시간 테스트 영상 기록 및 분석
+                                    </li>
+                                    <li className="flex items-center text-slate-700">
+                                        <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        이체 실패 등 오류 발생 시 SMS/Email 즉시 통지
+                                    </li>
+                                    <li className="flex items-center text-slate-700">
+                                        <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        금융보안원 보안 심의 기준 준수
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div className="md:w-1/2">
+                                {/* Dashboard Mockup */}
+                                <div className="bg-slate-900 rounded-xl p-4 shadow-2xl border border-slate-700 transform rotate-1 hover:rotate-0 transition-transform duration-500">
+                                    <div className="flex items-center space-x-2 mb-4 border-b border-slate-700/50 pb-2">
+                                        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                                        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    </div>
+                                    <div className="space-y-3">
+                                        <div className="flex gap-3">
+                                            <div className="flex-1 h-32 bg-slate-800 rounded-lg animate-pulse"></div>
+                                            <div className="flex-1 h-32 bg-slate-800 rounded-lg animate-pulse delay-75"></div>
+                                        </div>
+                                        <div className="h-40 bg-slate-800 rounded-lg w-full"></div>
+                                        <div className="flex justify-between text-xs text-slate-500 mt-2">
+                                            <span>Status: Running</span>
+                                            <span>Devices: 124 Active</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // --- Expected Effects Component ---
+        const ExpectedEffects = () => {
+            const tableData = [
+                { category: '테스트 수행 시간', asIs: '매주 수십 시간 소요', toBe: '완전 자동화 (0시간)', effect: '업무 효율 극대화' },
+                { category: '수동 테스트 제거', asIs: '매주 20시간 이상 투입', toBe: 'QA 인적 자원 제로(0)화', effect: '고부가가치 업무 집중' },
+                { category: '기기 테스트 범위', asIs: '주요 기종 샘플링', toBe: '수백 대 실제 기기 동시 검증', effect: '검증 신뢰도 상승' },
+                { category: '출시 속도', asIs: '테스트 대기 시간 발생', toBe: '검증 즉시 배포 가능', effect: '배포 주기 단축' },
+                { category: '버그 발견율', asIs: '사용자 제보 후 인지', toBe: '출시 전 잠재 결함 선제 차단', effect: '서비스 품질 향상' },
+            ];
+
+            return (
+                <section id="effects" className="py-24 bg-slate-50">
+                    <div className="container mx-auto px-6">
+                        <div className="text-center mb-16">
+                            <div className="inline-block px-4 py-1.5 mb-4 text-xs font-bold text-blue-600 bg-blue-100 rounded-full uppercase tracking-wide">
+                                Performance
+                            </div>
+                            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">도입 기대 효과</h2>
+                            <p className="text-lg text-slate-600">
+                                Project Synchro는 단순한 자동화를 넘어, 비즈니스 속도와 품질을 혁신합니다.
+                            </p>
+                        </div>
+
+                        <div className="overflow-x-auto bg-white rounded-2xl shadow-lg border border-slate-100 mb-16">
+                            <table className="w-full min-w-[800px]">
+                                <thead>
+                                    <tr className="bg-slate-100 text-slate-600 text-sm uppercas">
+                                        <th className="py-4 px-6 text-left font-semibold">구분</th>
+                                        <th className="py-4 px-6 text-left font-semibold text-slate-500">수동 검증 (As-Is)</th>
+                                        <th className="py-4 px-6 text-left font-semibold text-blue-600">Project Synchro (To-Be)</th>
+                                        <th className="py-4 px-6 text-left font-semibold">개선 효과</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100">
+                                    {tableData.map((row, idx) => (
+                                        <tr key={idx} className="hover:bg-slate-50 transition-colors">
+                                            <td className="py-4 px-6 font-medium text-slate-900">{row.category}</td>
+                                            <td className="py-4 px-6 text-slate-500">{row.asIs}</td>
+                                            <td className="py-4 px-6 text-blue-600 font-bold">{row.toBe}</td>
+                                            <td className="py-4 px-6 text-slate-900">
+                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    {row.effect}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-10 md:p-16 text-center text-white relative overflow-hidden">
+                            <div className="relative z-10">
+                                <h3 className="text-3xl font-bold mb-4">상시 생존 확인 (Health Check)</h3>
+                                <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
+                                    24시간 로봇이 핵심 서비스를 상시 점검하여, 장애 발생 시 고객보다 먼저 인지하고 대응합니다.
+                                    <br />안전한 금융 생활의 시작, Project Synchro가 함께합니다.
+                                </p>
+                                <button className="bg-white text-blue-600 px-8 py-3 rounded-full font-bold hover:bg-blue-50 transition-colors shadow-lg">
+                                    도입 문의하기
+                                </button>
+                            </div>
+                            
+                            <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+                            <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/3 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl pointer-events-none"></div>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // --- Demo Video Component ---
+        const DemoVideo = () => {
+            return (
+                <section id="demo" className="py-24 bg-slate-900 text-white">
+                    <div className="container mx-auto px-6 text-center">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4">Actual Demo</h2>
+                        <p className="text-slate-400 mb-12">
+                            Project Synchro가 실제로 어떻게 작동하는지 확인해보세요.
+                        </p>
+
+                        <div className="max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl border border-slate-700 bg-black aspect-video relative group">
+                            <video 
+                                className="w-full h-full object-cover" 
+                                controls 
+                                poster="https://placehold.co/1280x720/1e293b/ffffff?text=Project+Synchro+Demo"
+                            >
+                                <source src="./SAMPLE.MP4" type="video/mp4" />
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        
+                        <p className="mt-6 text-sm text-slate-500">
+                            * 시연 영상은 실제 로봇 팔과 비전 AI가 연동되어 작동하는 화면입니다.
+                        </p>
+                    </div>
+                </section>
+            );
+        };
+
+        // --- Footer Component ---
+        const Footer = () => {
+            return (
+                <footer className="bg-slate-900 text-slate-400 py-12">
+                    <div className="container mx-auto px-6">
+                        <div className="flex flex-col md:flex-row justify-between items-center">
+                            <div className="mb-6 md:mb-0">
+                                <h3 className="text-xl font-bold text-white mb-2">Project Synchro</h3>
+                                <p className="text-sm">NH 올바름 / 테크시스템부 xp클라우드국</p>
+                            </div>
+                            <div className="flex space-x-6">
+                                <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+                                <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+                                <a href="#" className="hover:text-white transition-colors">Contact</a>
+                            </div>
+                        </div>
+                        <div className="border-t border-slate-800 mt-8 pt-8 text-center text-sm">
+                            &copy; 2026 Project Synchro. All rights reserved.
+                        </div>
+                    </div>
+                </footer>
+            );
+        };
+
+        // --- Main App Component ---
+        function App() {
+            return (
+                <div className="font-sans antialiased text-slate-900 bg-white">
+                    <Header />
+                    <main>
+                        <Hero />
+                        <Overview />
+                        <Technology />
+                        <Features />
+                        <ExpectedEffects />
+                        <DemoVideo />
+                    </main>
+                    <Footer />
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
